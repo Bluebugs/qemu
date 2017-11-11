@@ -183,6 +183,25 @@ static void sh7785_class_init(ObjectClass *oc, void *data)
     scc->cvr = 0x71440211;
 }
 
+static void j32_cpu_initfn(Object *obj)
+{
+    SuperHCPU *cpu = SUPERH_CPU(obj);
+    CPUSH4State *env = &cpu->env;
+
+    env->id = SH_CPU_J32;
+    env->features = SH_FEATURE_J32;
+}
+
+static void j32_class_init(ObjectClass *oc, void *data)
+{
+    SuperHCPUClass *scc = SUPERH_CPU_CLASS(oc);
+
+    // FIXME: Get proper value for the jcore.
+    scc->pvr = 0x10300700;
+    scc->prr = 0x00000200;
+    scc->cvr = 0x71440211;
+}
+
 static void superh_cpu_realizefn(DeviceState *dev, Error **errp)
 {
     CPUState *cs = CPU(dev);
@@ -275,6 +294,8 @@ static const TypeInfo superh_cpu_type_infos[] = {
                            sh7751r_cpu_initfn),
     DEFINE_SUPERH_CPU_TYPE(TYPE_SH7785_CPU, sh7785_class_init,
                            sh7785_cpu_initfn),
+    DEFINE_SUPERH_CPU_TYPE(TYPE_J32_CPU, j32_class_init,
+                           j32_cpu_initfn),
 
 };
 
