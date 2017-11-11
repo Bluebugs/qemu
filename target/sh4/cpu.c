@@ -135,7 +135,7 @@ static void sh7750r_cpu_initfn(Object *obj)
     CPUSH4State *env = &cpu->env;
 
     env->id = SH_CPU_SH7750R;
-    env->features = SH_FEATURE_BCR3_AND_BCR4;
+    env->features = SH_FEATURE_SH4 | SH_FEATURE_BCR3_AND_BCR4;
 }
 
 static void sh7750r_class_init(ObjectClass *oc, void *data)
@@ -153,7 +153,7 @@ static void sh7751r_cpu_initfn(Object *obj)
     CPUSH4State *env = &cpu->env;
 
     env->id = SH_CPU_SH7751R;
-    env->features = SH_FEATURE_BCR3_AND_BCR4;
+    env->features = SH_FEATURE_SH4 | SH_FEATURE_BCR3_AND_BCR4;
 }
 
 static void sh7751r_class_init(ObjectClass *oc, void *data)
@@ -171,7 +171,7 @@ static void sh7785_cpu_initfn(Object *obj)
     CPUSH4State *env = &cpu->env;
 
     env->id = SH_CPU_SH7785;
-    env->features = SH_FEATURE_SH4A;
+    env->features = SH_FEATURE_SH4 | SH_FEATURE_SH4A;
 }
 
 static void sh7785_class_init(ObjectClass *oc, void *data)
