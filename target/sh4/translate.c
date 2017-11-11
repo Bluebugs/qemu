@@ -492,8 +492,7 @@ static void _decode_opc(DisasContext * ctx)
         tcg_gen_xori_i32(cpu_fpscr, cpu_fpscr, FPSCR_SZ);
         ctx->base.is_jmp = DISAS_STOP;
 	return;
-    case 0xf7fd:                /* fpchg */
-        CHECK_SH4A
+    HANDLE(f7fd)                /* fpchg */
         tcg_gen_xori_i32(cpu_fpscr, cpu_fpscr, FPSCR_PR);
         ctx->base.is_jmp = DISAS_STOP;
         return;
@@ -1542,15 +1541,13 @@ static void _decode_opc(DisasContext * ctx)
         }
         ctx->has_movcal = 1;
 	return;
-    case 0x40a9:                /* movua.l @Rm,R0 */
-        CHECK_SH4A
+    HANDLE(40a9)                /* movua.l @Rm,R0 */
         /* Load non-boundary-aligned data */
         tcg_gen_qemu_ld_i32(REG(0), REG(B11_8), ctx->memidx,
                             MO_TEUL | MO_UNALN);
         return;
         break;
-    case 0x40e9:                /* movua.l @Rm+,R0 */
-        CHECK_SH4A
+    HANDLE(40e9)                /* movua.l @Rm+,R0 */
         /* Load non-boundary-aligned data */
         tcg_gen_qemu_ld_i32(REG(0), REG(B11_8), ctx->memidx,
                             MO_TEUL | MO_UNALN);
@@ -1560,7 +1557,7 @@ static void _decode_opc(DisasContext * ctx)
     case 0x0029:		/* movt Rn */
         tcg_gen_mov_i32(REG(B11_8), cpu_sr_t);
 	return;
-    case 0x0073:
+    HANDLE(0073)
         /* MOVCO.L
          *     LDST -> T
          *     If (T == 1) R0 -> (Rn)
@@ -1570,7 +1567,6 @@ static void _decode_opc(DisasContext * ctx)
          * Since we currently support no smp boards, this implies user-mode.
          * But we can still support the official mechanism while user-mode
          * is single-threaded.  */
-        CHECK_SH4A
         {
             TCGLabel *fail = gen_new_label();
             TCGLabel *done = gen_new_label();
@@ -1599,7 +1595,7 @@ static void _decode_opc(DisasContext * ctx)
             tcg_gen_movi_i32(cpu_lock_addr, -1);
         }
         return;
-    case 0x0063:
+    HANDLE(0063)
         /* MOVLI.L @Rm,R0
          *     1 -> LDST
          *     (Rm) -> R0
@@ -1608,7 +1604,6 @@ static void _decode_opc(DisasContext * ctx)
          *
          * In a parallel context, we must also save the loaded value
          * for use with the cmpxchg that we'll use with movco.l.  */
-        CHECK_SH4A
         if ((tb_cflags(ctx->base.tb) & CF_PARALLEL)) {
             TCGv tmp = tcg_temp_new();
             tcg_gen_mov_i32(tmp, REG(B11_8));
@@ -1634,14 +1629,11 @@ static void _decode_opc(DisasContext * ctx)
 	return;
     case 0x0083:		/* pref @Rn */
 	return;
-    case 0x00d3:		/* prefi @Rn */
-        CHECK_SH4A
+    HANDLE(00d3)                /* prefi @Rn */
         return;
-    case 0x00e3:		/* icbi @Rn */
-        CHECK_SH4A
+    HANDLE(00e3)                /* icbi @Rn */
         return;
-    case 0x00ab:		/* synco */
-        CHECK_SH4A
+    HANDLE(00ab)                /* synco */
         tcg_gen_mb(TCG_MO_ALL | TCG_BAR_SC);
         return;
         break;
