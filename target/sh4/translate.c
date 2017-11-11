@@ -678,6 +678,11 @@ static void _decode_opc(DisasContext * ctx)
 	    tcg_temp_free(addr);
 	}
 	return;
+    HANDLE(2003)                /* cas.l Rm, Rn, @R0 */
+        {
+            tcg_gen_atomic_cmpxchg_i32(cpu_sr_t, REG(0), REG(B11_8), REG(B7_4), ctx->memidx, MO_TEUL);
+        }
+        return;
     HANDLE(6008)                /* swap.b Rm,Rn */
 	{
             TCGv low = tcg_temp_new();
