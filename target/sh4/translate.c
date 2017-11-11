@@ -31,6 +31,7 @@
 #include "trace-tcg.h"
 #include "exec/log.h"
 
+#include "family_features.h"
 
 typedef struct DisasContext {
     DisasContextBase base;
@@ -396,6 +397,12 @@ static inline void gen_store_fpr64(DisasContext *ctx, TCGv_i64 t, int reg)
     if (!(ctx->features & SH_FEATURE_SH4A)) { \
         goto do_illegal;                      \
     }
+
+#define HANDLE(Op)                                  \
+    case 0x##Op:                                    \
+        if (!(ctx->features & (FEATURES_##Op))) {   \
+            goto do_illegal;                        \
+        }
 
 static void _decode_opc(DisasContext * ctx)
 {
