@@ -136,8 +136,16 @@ typedef struct tlb_t {
 #define TARGET_INSN_START_EXTRA_WORDS 1
 
 enum sh_features {
-    SH_FEATURE_SH4A = 1,
-    SH_FEATURE_BCR3_AND_BCR4 = 2,
+    SH_FEATURE_SH1 = 1,
+    SH_FEATURE_SH2 = 1 << 1,
+    SH_FEATURE_SH2E = 1 << 2,
+    SH_FEATURE_SH2A = 1 << 3,
+    SH_FEATURE_SH3 = 1 << 4,
+    SH_FEATURE_SH3E = 1 << 5,
+    SH_FEATURE_SH4 = 1 << 6,
+    SH_FEATURE_SH4A = 1 << 7,
+    SH_FEATURE_J32 = 1 << 8,    /* J-Core 32 bits CPU */
+    SH_FEATURE_BCR3_AND_BCR4 = 1 << 9,
 };
 
 typedef struct memory_content {
